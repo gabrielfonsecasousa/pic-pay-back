@@ -10,6 +10,7 @@ class AuthController extends Controller
         $providers = ['users','retailer'];
         if(!in_array($provider,$providers)){
             return response()->json(['errors' => ['main' => 'Wrong prodiver provided']], 422);
-        } 
+        }
+        return 'o provider escolhido foi' . $provider;
     }
 }
