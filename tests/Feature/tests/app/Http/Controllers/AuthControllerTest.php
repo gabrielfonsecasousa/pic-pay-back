@@ -2,12 +2,16 @@
 
 namespace Tests\Feature\tests\app\Http\Controllers;
 
+use App\Models\Retailer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\HttpFoundation\Request;
 use Tests\TestCase;
+use TheSeer\Tokenizer\Exception;
 
 class AuthControllerTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      *
@@ -19,10 +23,25 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
-
+    
     public function testUserShouldNotAuthenticateWrongProvider(){
-        $request = $this->post(route('authenticate', ['provider' => 'deixa-o-sub']));
-        $request->assertStatus(422); 
+        $payload = [
+            'email' => 'picpay@outlook.com',
+            'password' => 'picpay123',
+        ];
+        $request = $this->post(route('authenticate', ['provider' => 'deixa-o-sub']), $payload);
+        $request->assertStatus(422);
         $request->assertJson(['errors' => ['main' => 'Wrong prodiver provided']], 422); 
     }
+    public function testUserShouldBeDeniedIfNotRegistered(){ 
+        $payload = [
+            'email' => 'picpay@outlook.com',
+            'password' => 'picpay123',
+        ]; 
+        $request = $this->post(route('authenticate', ['provider' => 'user']), $payload); 
+        $request->assertStatus(401);
+        $request->assertJson(['errors'=>['main'=>'Wrong credencials']]);
+        
+    }
+     
 }
