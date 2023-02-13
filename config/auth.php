@@ -1,4 +1,5 @@
 <?php
+use App\Models\Retailer;
 
 return [
 
@@ -36,12 +37,20 @@ return [
     */
 
     'guards' => [
+        'retailer' => [
+            'driver' => 'passport',
+            'provider' => 'retailer',
+        ],
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
 
         'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
+        'user' => [
             'driver' => 'passport',
             'provider' => 'users',
         ],
@@ -67,13 +76,17 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => User::class,
+        ],
+        'retailers' => [
+            'driver' => 'eloquent',
+            'model' => Retailer::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
     ],
 
     /*

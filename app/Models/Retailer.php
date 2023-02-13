@@ -1,13 +1,14 @@
 <?php
 
 
-namespace App\Models; 
+namespace App\Models;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContractsContract;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 
 class Retailer extends Authenticatable implements AuthenticatableContractsContract
@@ -23,7 +24,7 @@ class Retailer extends Authenticatable implements AuthenticatableContractsContra
         'id',
         'name',
         'email',
-        'document_id', 
+        'document_id',
     ];
 
     /**

@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-$router->post('/auth/{provider}',['as'=>'authenticate','uses' => 'App\Http\Controllers\AuthController@postAuthentication']); 
+$router->post('/auth/{provider}', ['as' => 'authenticate', 'uses' => 'App\Http\Controllers\AuthController@postAuthentication']);

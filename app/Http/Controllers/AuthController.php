@@ -21,16 +21,20 @@ class AuthController extends Controller
         if (!in_array($provider, $providers)) {
             return response()->json(['errors' => ['main' => 'Wrong prodiver provided']], 422);
         }
-        $provider = $this->getProvider($provider);
-        $model = $provider->where('email', '=', $request->input('email'))->first();
+        $selectProvider = $this->getProvider($provider);
+        $model = $selectProvider->where('email', '=', $request->input('email'))->first();
         if (!$model) {
             return response()->json(['errors' => ['main' => 'Wrong credencials']], 401);
         }
         if (!Hash::check($request->input('password'), $model->password)) {
             return response()->json(['errors' => ['main' => 'Wrong credencials']], 401);
         }
-
-        return 'o provider escolhido foi' . $provider;
+        $token = $model->createToken($selectProvider);
+        return response()->json([
+            'access_token' => $token->accessToken,
+            'expires_at' => $token->token->expires_at,
+            'provider' => $provider,
+        ]);
     }
 
 

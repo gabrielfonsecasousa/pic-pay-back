@@ -57,5 +57,17 @@ class AuthControllerTest extends TestCase
         $request->assertJson(['errors' => ['main' => 'Wrong credencials']], 401);
 
     }
+    public function testUserCanAuthenticate()
+    {
+        $this->artisan('passport:install');
+        $user = User::factory()->create();
+        $payload = [
+            'email' => $user->email,
+            'password' => 'secret123',
+        ];
+        $request = $this->post(route('authenticate', ['provider' => 'user']), $payload);
+        $request->assertStatus(200);
+        $request->assertJsonStructure(['access_token', 'expires_at', 'provider']);
+    }
 
 }
